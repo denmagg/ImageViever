@@ -11,9 +11,6 @@ import Nuke
 
 class DetailViewController: UIViewController, UIScrollViewDelegate {
     
-//    var scrollView = UIScrollView()
-//    var imageView = UIImageView()
-//    var buttoon = UIButton()
     var imageScrollView = ImageScrollView()
     var presenter: DetailViewPresenterProtocol!
     
@@ -30,57 +27,18 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
     private func initialize() {
         view.backgroundColor = .white
         view.addSubview(imageScrollView)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(descriptionButtonTapped(button:)))
         
-        //imageScrollView.delegate = self
         imageScrollView.snp.makeConstraints { make in
             print("going")
             make.edges.equalTo(view.safeAreaInsets)
-            //make.center.equalTo(view)
         }
-        
-//        imageScrollView.imageView.snp.makeConstraints { make in
-//            make.size.width.equalTo(view)
-//            make.size.height.equalTo(view)
-//        }
-        
-//        view.addSubview(scrollView)
-//        scrollView.addSubview(imageView)
-//        scrollView.addSubview(buttoon)
-//
-//        view.backgroundColor = .white
-//
-//        scrollView.delegate = self
-//        scrollView.minimumZoomScale = 1.0
-//        scrollView.maximumZoomScale = 6.0
-//        scrollView.backgroundColor = .green
-//
-//
-//
-//        imageView.isUserInteractionEnabled = true
-//
-//        buttoon.backgroundColor = .blue
-//        buttoon.frame.size.height = 10
-//        buttoon.frame.size.width = 10
-//
-//        scrollView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-//        }
-//
-//        imageView.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//        }
-//
-//        buttoon.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//        }
     }
     
-//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-//        return self.imageScrollView.imageView
-//    }
-    
-    
-
+    @objc func descriptionButtonTapped(button: UIBarButtonItem){
+        presenter.tapOnDescription()
+        
+    }
 }
 
 extension DetailViewController: DetailViewProtocol {
@@ -88,15 +46,12 @@ extension DetailViewController: DetailViewProtocol {
         print(image?.url)
         guard let imageUrl = image?.url else { return }
         
-//        presenter.getData(from: imageUrl) { data in
-//            DispatchQueue.main.async {
-////                self.imageScrollView.imageView.image = UIImage(data: data)
-////                self.imageScrollView.imageView.contentMode = .scaleAspectFit
-//                self.imageScrollView.display(image: UIImage(data: data)!)
-//            }
-//        }
         let options = ImageLoadingOptions(
-            placeholder: UIImage(systemName: "photo"), transition: .fadeIn(duration: 0.33), failureImage: UIImage(systemName: "goforward"), failureImageTransition: .fadeIn(duration: 0.33), contentModes: .init(success: .scaleAspectFill, failure: .center, placeholder: .center)
+            placeholder: UIImage(systemName: "photo"),
+            transition: .fadeIn(duration: 0.33),
+            failureImage: UIImage(systemName: "goforward"),
+            failureImageTransition: .fadeIn(duration: 0.33),
+            contentModes: .init(success: .scaleAspectFill, failure: .center, placeholder: .center)
         )
         
         Nuke.loadImage(with: URL(string: imageUrl)!,

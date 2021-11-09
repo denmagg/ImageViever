@@ -16,8 +16,7 @@ protocol DetailViewProtocol: class {
 protocol DetailViewPresenterProtocol: class {
     init(view: DetailViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, image : Image?)
     func setImage()
-    //func tap()
-    func getData(from urlString: String, complition: @escaping (Data)->())
+    func tapOnDescription()
 }
 
 class DetailPresenter:  DetailViewPresenterProtocol {
@@ -37,18 +36,9 @@ class DetailPresenter:  DetailViewPresenterProtocol {
         self.view?.setImage(image: image)
     }
     
-//    func tap() {
-//        router?.popToRoot()
-//    }
-    
-    func getData(from urlString: String, complition: @escaping (Data)->()) {
-        DispatchQueue.global().async {
-            if let url = URL(string: urlString) {
-                if let data = try? Data(contentsOf: url) {
-                    complition(data)
-                }
-            }
-        }
+    func tapOnDescription() {
+        router?.showDescription(description: image?.title ?? "биба")
+        print("DescriptionTapped")
     }
     
 }

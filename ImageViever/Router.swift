@@ -18,6 +18,7 @@ protocol RouterMain {
 protocol RouterProtocol: RouterMain {
     func initialViewController()
     func showDetail(image: Image?)
+    func showDescription(description: String)
     func popToRoot()
 }
 
@@ -42,6 +43,14 @@ class Router : RouterProtocol {
         if let navigationController = navigationController {
             guard let detailViewController = assembyBuilder?.createDetailModule(image: image, router: self) else { return }
             navigationController.pushViewController(detailViewController, animated: true)
+        }
+    }
+    
+    func showDescription(description: String){
+        if let navigationController = navigationController {
+            guard let descriptionViewController = assembyBuilder?.createDescriptionModule(description: description, router: self) else { return }
+            descriptionViewController.modalPresentationStyle = .popover
+            navigationController.viewControllers.last?.present(descriptionViewController, animated: true)
         }
     }
     

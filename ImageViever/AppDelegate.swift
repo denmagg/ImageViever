@@ -16,8 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        NetworkMonitor.shared.stopMonitoring()
+        NetworkMonitor.shared.startMonitoring()
         return true
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        NetworkMonitor.shared.stopMonitoring()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        NetworkMonitor.shared.startMonitoring()
     }
 
     // MARK: UISceneSession Lifecycle

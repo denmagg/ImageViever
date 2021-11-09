@@ -9,13 +9,7 @@
 import SnapKit
 import UIKit
 
-//protocol buttonDelegate {
-//    func didSelect(button: UIButton)
-//}
-
 class GalleryViewCell: UITableViewCell {
-    
-    //var buttonDelegate: buttonDelegate?
     
     var firstImageButton = CustomButton()
     var middleImageButton = CustomButton()
@@ -29,15 +23,13 @@ class GalleryViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        //let sizeOfImage = (superview?.frame.size.width)! / 3
-        
-        //let sizeOfImage = superview?.snp.height
-        
         addSubview(firstImageButton)
         addSubview(middleImageButton)
         addSubview(lastImageButton)
         
-        firstImageButton.imageView?.contentMode = .scaleAspectFill
+        firstImageButton.imageView?.contentMode = .scaleAspectFit
+        lastImageButton.imageView?.contentMode = .scaleAspectFit
+        middleImageButton.imageView?.contentMode = .scaleAspectFit
         
         firstImageButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -60,19 +52,9 @@ class GalleryViewCell: UITableViewCell {
         firstImageButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 1)
         middleImageButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
         lastImageButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 0)
-
-        
-//        firstImageButton.addTarget(self, action: #selector(buttonPressed(button:)), for: .touchUpInside)
-//        middleImageButton.addTarget(self, action: #selector(buttonPressed(button:)), for: .touchUpInside)
-//        lastImageButton.addTarget(self, action: #selector(buttonPressed(button:)), for: .touchUpInside)
     
         // Configure the view for the selected state
     }
-    
-//    @objc func buttonPressed(button: UIButton) {
-//        print()
-//        //buttonDelegate?.didSelect(button: button)
-//    }
 
 }
 

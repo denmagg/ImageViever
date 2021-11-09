@@ -18,8 +18,7 @@ protocol GalleryViewProtocol: class {
 //протокол для входа данных
 protocol GalleryPresenterProtocol: class {
     init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol)
-    //func getImages()
-    func getData(from urlString: String?, complition: @escaping (Data)->())
+    func getImages()
     var images: [Image]? { get set }
     func tapOnTheImage(imageId: Int?)
 }
@@ -61,33 +60,6 @@ class GalleryPresenter: GalleryPresenterProtocol {
             }
         }
     }
-    
-    func getData(from urlString: String?, complition: @escaping (Data)->()) {
-        if let urlString = urlString {
-            DispatchQueue.global().async {
-                if let url = URL(string: urlString) {
-                    if let data = try? Data(contentsOf: url) {
-                        complition(data)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-//    func getData(urlString: String?) -> Data? {
-//        var imageData: Data?
-//        DispatchQueue.global().async {
-//            guard let urlString = urlString else { return }
-//            if let url = URL(string: urlString) {
-//                if let data = try? Data(contentsOf: url) {
-//                    imageData = data
-//                }
-//            }
-//        }
-//        return imageData
-//    }
 }
 
 
