@@ -9,14 +9,16 @@
 import UIKit
 import Nuke
 
-class DetailViewController: UIViewController, UIScrollViewDelegate {
+final class DetailViewController: UIViewController, UIScrollViewDelegate {
     
-    var imageScrollView = ImageScrollView()
+    private var imageScrollView: ImageScrollView!
     var presenter: DetailViewPresenterProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //imageScrollView = ImageScrollView(barHeight: (getStatusBarHeight() + getNavigationBarHeight()))
+        imageScrollView = ImageScrollView()
         initialize()
         imageScrollView.setup()
 
@@ -24,14 +26,30 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
     }
     
+    
+    private func getStatusBarHeight() -> CGFloat {
+        var statusBarHeight: CGFloat = 0
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+            statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        } else {
+            statusBarHeight = UIApplication.shared.statusBarFrame.height
+        }
+        return statusBarHeight
+    }
+    
+    private func getNavigationBarHeight() -> CGFloat {
+        return (navigationController?.navigationBar.frame.height ?? 0)
+    }
+    
     private func initialize() {
         view.backgroundColor = .white
-        view.addSubview(imageScrollView)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(descriptionButtonTapped(button:)))
         
+        view.addSubview(imageScrollView)
         imageScrollView.snp.makeConstraints { make in
             print("going")
-            make.edges.equalTo(view.safeAreaInsets)
+            make.edges.equalToSuperview()
         }
     }
     

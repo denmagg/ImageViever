@@ -10,12 +10,12 @@ import SnapKit
 import UIKit
 import Nuke
 
-class GalleryViewController: UIViewController {
+final class GalleryViewController: UIViewController {
     
     var presenter: GalleryPresenterProtocol!
-    var tableView = UITableView()
+    private var tableView = UITableView()
     
-    let options = ImageLoadingOptions(
+    private let options = ImageLoadingOptions(
         placeholder: UIImage(systemName: "photo"),
         transition: .fadeIn(duration: 0.33),
         failureImage: UIImage(systemName: "goforward"),
@@ -48,43 +48,70 @@ class GalleryViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        tableView.register(GalleryViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(GalleryViewCell.self, forCellReuseIdentifier: String(describing: GalleryViewCell.self))
     }
 }
 
 extension GalleryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.images?.count ?? 0
+        let numberOfRows: Double = Double(presenter.images?.count ?? 0)/3
+        return Int(numberOfRows.rounded(.up))
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GalleryViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: GalleryViewCell.self), for: indexPath) as! GalleryViewCell
         
         let firstImageId = indexPath.row * 3
         let middleImageId = (indexPath.row * 3) + 1
         let lastImageId = (indexPath.row * 3) + 2
         
+//        MARK: Nuke
+        guard (presenter.images?.indices.contains(firstImageId))!,
+            let firstImageUrlString = (presenter.images?[firstImageId].thumbnailUrl),
+            let firstImageUrl = URL(string: firstImageUrlString) else {
+                cell.firstImageButton.removeTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
+                // FIXME: почему-то изображение ремувится только после повторной загрузки ячейки
+                cell.firstImageButton.setImage(nil, for: .normal)
+                return cell
+        }
+        
         cell.firstImageButton.imgId = firstImageId
         cell.firstImageButton.addTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
         
+        Nuke.loadImage(with: firstImageUrl,
+                       options: options,
+                       into: cell.firstImageButton)
+        
+        guard (presenter.images?.indices.contains(middleImageId))!,
+            let middleImageUrlString = (presenter.images?[middleImageId].thumbnailUrl),
+            let secondImageUrl = URL(string: middleImageUrlString) else {
+                cell.middleImageButton.removeTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
+                cell.middleImageButton.setImage(nil, for: .normal)
+                return cell
+                
+        }
+        
         cell.middleImageButton.imgId = middleImageId
-        cell.middleImageButton.addTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
+               cell.middleImageButton.addTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
+        
+        Nuke.loadImage(with: secondImageUrl,
+                       options: options,
+                       into: cell.middleImageButton)
+        
+        guard (presenter.images?.indices.contains(lastImageId))!,
+            let lastImageUrlString = (presenter.images?[lastImageId].thumbnailUrl),
+            let lastImageUrl = URL(string: lastImageUrlString) else {
+                cell.lastImageButton.removeTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
+                cell.lastImageButton.setImage(nil, for: .normal)
+                return cell
+        }
         
         cell.lastImageButton.imgId = lastImageId
         cell.lastImageButton.addTarget(self, action: #selector(self.buttonTapped(button:)), for: .touchUpInside)
         
-//        MARK: Nuke
-        Nuke.loadImage(with: URL(string: (presenter.images?[firstImageId].thumbnailUrl)!)!,
+        Nuke.loadImage(with: lastImageUrl,
                        options: options,
-                       into: cell.firstImageButton)
-        
-        Nuke.loadImage(with: URL(string: (presenter.images?[middleImageId].thumbnailUrl)!)!,
-                       options: options,
-                       into: cell.middleImageButton)
-        
-        Nuke.loadImage(with: URL(string: (presenter.images?[lastImageId].thumbnailUrl)!)!,
-        options: options,
-        into: cell.lastImageButton)
+                       into: cell.lastImageButton)
         
         return cell
     }
@@ -93,7 +120,7 @@ extension GalleryViewController: UITableViewDataSource {
         return view.frame.width / 3
     }
     
-    @objc func buttonTapped(button: CustomButton) {
+    @objc private  func buttonTapped(button: CustomButton) {
         print(button.imgId)
         presenter.tapOnTheImage(imageId: button.imgId)
     }

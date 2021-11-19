@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Nuke
 
-class CustomButton : UIButton {
+final class CustomButton : UIButton {
     //var img: Image?
     var imgId: Int?
     

@@ -9,16 +9,16 @@
 import SnapKit
 import UIKit
 
-class GalleryViewCell: UITableViewCell {
+final class GalleryViewCell: UITableViewCell {
     
     var firstImageButton = CustomButton()
     var middleImageButton = CustomButton()
     var lastImageButton = CustomButton()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        // Initialization code
+//    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class Image: NSObject, Decodable {
+struct Image: Decodable {
     var albumId: Int
     var id: Int
     var title: String

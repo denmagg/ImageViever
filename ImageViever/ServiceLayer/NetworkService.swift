@@ -12,7 +12,7 @@ protocol NetworkServiceProtocol {
     func getImages(complition: @escaping (Result<[Image]?, NetworkError>) -> Void)
 }
 
-class NetworkService: NetworkServiceProtocol {
+final class NetworkService: NetworkServiceProtocol {
     func getImages(complition: @escaping (Result<[Image]?, NetworkError>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/photos"
         

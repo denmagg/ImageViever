@@ -8,17 +8,17 @@
 
 import UIKit
 
-protocol AsselderBuilderProtocol {
-    func createMainModule(router: RouterProtocol) -> UIViewController
-    func createDetailModule(image: Image?, router: RouterProtocol) -> UIViewController
+protocol AssemblyBuilderProtocol {
+    func createGalleryModule(router: RouterProtocol) -> UIViewController
+    func createDetailModule(image: Image, router: RouterProtocol) -> UIViewController
     func createDescriptionModule(description: String, router: RouterProtocol) -> UIViewController
 }
 
 //Внедрение зависимостей - те они создаются не внутри всех этих сущностей эти штуки, а снаружи и потом туда инжектятся
 //Нужна по SOLID, и для того чтобы во время тестов подсунуть сюда мок объект, для того чтобы протестировать презентер.
-class AsselderModuleBuilder: AsselderBuilderProtocol {
+final class AssemblyModuleBuilder: AssemblyBuilderProtocol {
     
-    func createMainModule(router: RouterProtocol) -> UIViewController {
+    func createGalleryModule(router: RouterProtocol) -> UIViewController {
         let networkService = NetworkService()
         let view = GalleryViewController()
         let presenter = GalleryPresenter(view: view, networkService: networkService, router: router)
@@ -26,17 +26,16 @@ class AsselderModuleBuilder: AsselderBuilderProtocol {
         return view
     }
     
-    func createDetailModule(image: Image?, router: RouterProtocol) -> UIViewController {
-        let networkService = NetworkService()
+    func createDetailModule(image: Image, router: RouterProtocol) -> UIViewController {
         let view = DetailViewController()
-        let presenter = DetailPresenter(view: view, networkService: networkService, router: router, image: image)
+        let presenter = DetailPresenter(view: view, router: router, image: image)
         view.presenter = presenter
         return view
     }
     
     func createDescriptionModule(description: String, router: RouterProtocol) -> UIViewController {
         let view = DescriptionViewController()
-        let presenter = DescriptionPresenter(view: view, description: description)
+        let presenter = DescriptionPresenter(view: view, description: description, router: router)
         view.presenter = presenter
         return view
     }

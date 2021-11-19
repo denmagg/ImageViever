@@ -23,10 +23,10 @@ protocol GalleryPresenterProtocol: class {
     func tapOnTheImage(imageId: Int?)
 }
 
-class GalleryPresenter: GalleryPresenterProtocol {
-    weak var view: GalleryViewProtocol?
-    var router: RouterProtocol?
-    let networkService: NetworkServiceProtocol!
+final class GalleryPresenter: GalleryPresenterProtocol {
+    private weak var view: GalleryViewProtocol?
+    private var router: RouterProtocol?
+    private let networkService: NetworkServiceProtocol!
     var images: [Image]?
     
     required init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol) {

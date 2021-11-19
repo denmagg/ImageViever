@@ -14,20 +14,18 @@ protocol DetailViewProtocol: class {
 }
 
 protocol DetailViewPresenterProtocol: class {
-    init(view: DetailViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, image : Image?)
+    init(view: DetailViewProtocol, router: RouterProtocol, image : Image)
     func setImage()
     func tapOnDescription()
 }
 
-class DetailPresenter:  DetailViewPresenterProtocol {
-    weak var view: DetailViewProtocol?
-    var router: RouterProtocol?
-    let networkService: NetworkServiceProtocol!
-    var image: Image?
+final class DetailPresenter:  DetailViewPresenterProtocol {
+    private weak var view: DetailViewProtocol?
+    private var router: RouterProtocol?
+    private var image: Image
     
-    required init(view: DetailViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, image: Image?) {
+    required init(view: DetailViewProtocol, router: RouterProtocol, image: Image) {
         self.view = view
-        self.networkService = networkService
         self.image = image
         self.router = router
     }
@@ -37,7 +35,7 @@ class DetailPresenter:  DetailViewPresenterProtocol {
     }
     
     func tapOnDescription() {
-        router?.showDescription(description: image?.title ?? "биба")
+        router?.showDescription(description: image.title)
         print("DescriptionTapped")
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NetworkError: Error {
+enum NetworkError: Error, Equatable {
     case failedToWriteData
     case serverError
     case noConnection

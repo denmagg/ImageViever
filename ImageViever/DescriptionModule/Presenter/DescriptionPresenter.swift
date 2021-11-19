@@ -13,22 +13,28 @@ protocol DescriptionViewProtocol {
 }
 
 protocol DescriptionPresenterProtocol {
-    init(view: DescriptionViewProtocol, description: String)
+    init(view: DescriptionViewProtocol, description: String, router: RouterProtocol)
     func setDescription()
+    func goBack()
 }
 
 
-class DescriptionPresenter: DescriptionPresenterProtocol {
-    var view: DescriptionViewProtocol!
+final class DescriptionPresenter: DescriptionPresenterProtocol {
+    private var view: DescriptionViewProtocol!
+    private var router: RouterProtocol?
+    private let description: String
     
-    let description: String
-    
-    required init(view: DescriptionViewProtocol, description: String) {
+    required init(view: DescriptionViewProtocol, description: String, router: RouterProtocol) {
         self.view = view
         self.description = description
+        self.router = router
     }
     
     func setDescription() {
-        self.view.setDescription(description: description)
+        self.view.setDescription(description: self.description)
+    }
+    
+    func goBack() {
+        router?.backToDetailViewController()
     }
 }

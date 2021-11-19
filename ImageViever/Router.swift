@@ -11,52 +11,51 @@ import UIKit
 //базовый тип для всех роутеров
 protocol RouterMain {
     var navigationController: UINavigationController? { get set }
-    var assembyBuilder: AsselderBuilderProtocol? { get set }
+    var assemblyBuilder: AssemblyBuilderProtocol? { get set }
 }
 
 //для конкретного роутера
 protocol RouterProtocol: RouterMain {
     func initialViewController()
-    func showDetail(image: Image?)
+    func showDetail(image: Image)
     func showDescription(description: String)
-    func popToRoot()
+    func backToDetailViewController()
 }
 
-class Router : RouterProtocol {
+final class Router : RouterProtocol {
     var navigationController: UINavigationController?
     
-    var assembyBuilder: AsselderBuilderProtocol?
+    var assemblyBuilder: AssemblyBuilderProtocol?
     
-    init(navigationController: UINavigationController?, assembyBuilder: AsselderBuilderProtocol?){
+    init(navigationController: UINavigationController?, assemblyBuilder: AssemblyBuilderProtocol?){
         self.navigationController = navigationController
-        self.assembyBuilder = assembyBuilder
+        self.assemblyBuilder = assemblyBuilder
     }
 
     func initialViewController() {
         if let navigationController = navigationController {
-            guard let mainViewController = assembyBuilder?.createMainModule(router: self) else { return }
-            navigationController.viewControllers = [mainViewController]
+            guard let galleryViewController = assemblyBuilder?.createGalleryModule(router: self) else { return }
+            navigationController.viewControllers = [galleryViewController]
         }
     }
     
-    func showDetail(image: Image?) {
+    func showDetail(image: Image) {
         if let navigationController = navigationController {
-            guard let detailViewController = assembyBuilder?.createDetailModule(image: image, router: self) else { return }
+            guard let detailViewController = assemblyBuilder?.createDetailModule(image: image, router: self) else { return }
             navigationController.pushViewController(detailViewController, animated: true)
         }
     }
     
     func showDescription(description: String){
         if let navigationController = navigationController {
-            guard let descriptionViewController = assembyBuilder?.createDescriptionModule(description: description, router: self) else { return }
+            guard let descriptionViewController = assemblyBuilder?.createDescriptionModule(description: description, router: self) else { return }
             descriptionViewController.modalPresentationStyle = .popover
-            navigationController.viewControllers.last?.present(descriptionViewController, animated: true)
+            //navigationController.viewControllers.last?.present(descriptionViewController, animated: true)
+            navigationController.present(descriptionViewController, animated: true)
         }
     }
     
-    func popToRoot() {
-        if let navigationController = navigationController {
-            navigationController.popToRootViewController(animated: true)
-        }
+    func backToDetailViewController() {
+        navigationController?.viewControllers.last?.dismiss(animated: true)
     }
 }
