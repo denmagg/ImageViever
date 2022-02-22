@@ -8,21 +8,25 @@
 
 import Foundation
 
-protocol DescriptionViewProtocol {
+protocol DescriptionViewProtocol: class {
     func setDescription(description: String)
 }
 
-protocol DescriptionPresenterProtocol {
+protocol DescriptionPresenterProtocol: class {
     init(view: DescriptionViewProtocol, description: String, router: RouterProtocol)
     func setDescription()
     func goBack()
 }
 
-
 final class DescriptionPresenter: DescriptionPresenterProtocol {
-    private var view: DescriptionViewProtocol!
+    
+    //MARK: private properties
+    
+    private weak var view: DescriptionViewProtocol?
     private var router: RouterProtocol?
     private let description: String
+    
+    //MARK: init
     
     required init(view: DescriptionViewProtocol, description: String, router: RouterProtocol) {
         self.view = view
@@ -30,11 +34,13 @@ final class DescriptionPresenter: DescriptionPresenterProtocol {
         self.router = router
     }
     
+    //MARK: methods
+    
     func setDescription() {
-        self.view.setDescription(description: self.description)
+        view?.setDescription(description: description)
     }
     
     func goBack() {
-        router?.backToDetailViewController()
+        router?.closeDescription()
     }
 }

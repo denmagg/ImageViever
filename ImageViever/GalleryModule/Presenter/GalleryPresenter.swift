@@ -17,29 +17,47 @@ protocol GalleryViewProtocol: class {
 
 //протокол для входа данных
 protocol GalleryPresenterProtocol: class {
-    init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol)
-    func getImages()
+    var showLiked: Bool { get }
     var images: [Image]? { get set }
+    init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, showLiked: Bool)
+    func getImages()
     func tapOnTheImage(imageId: Int?)
+    func addImage()
 }
 
-final class GalleryPresenter: GalleryPresenterProtocol {
+class GalleryPresenter: GalleryPresenterProtocol {
+    
+    //MARK: properties
+    
+    var images: [Image]?
+    let showLiked: Bool
+    
+    //MARK: private properties
+    
     private weak var view: GalleryViewProtocol?
     private var router: RouterProtocol?
     private let networkService: NetworkServiceProtocol!
-    var images: [Image]?
     
-    required init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol) {
+    //MARK: init
+    
+    required init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, showLiked: Bool = false) {
         self.view = view
         self.networkService = networkService
         self.router = router
+        self.showLiked = showLiked
         getImages()
     }
+    
+    //MARK: methods
     
     func tapOnTheImage(imageId: Int?) {
         if let imageId = imageId, let image = images?[imageId] {
             router?.showDetail(image: image)
         }
+    }
+    
+    func addImage() {
+        router?.showImageAdding()
     }
     
     func getImages() {
@@ -50,9 +68,19 @@ final class GalleryPresenter: GalleryPresenterProtocol {
             //и тк у нас UI не работает в main потоке у нас все брякнестя
             DispatchQueue.main.async {
                 switch result {
-                    //если пришел success, то сюда вернутся комменты через ассоциаливный тип
+                    //если пришел success, то сюда вернутся изображения через ассоциаливный тип
                 case .success(let images):
-                    self.images = images
+                    if self.showLiked == true {
+                        self.images = images?.filter({ (image) -> Bool in
+                            if image.liked == true {
+                                return true
+                            } else {
+                                return false
+                            }
+                        })
+                    } else {
+                        self.images = images
+                    }
                     self.view?.success()
                 case .failure(let error):
                     self.view?.failture(error: error)

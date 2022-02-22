@@ -18,14 +18,12 @@ class GalleryPresenterTest: XCTestCase {
     var navigationController: MockNavigationController!
     var images: [Image]? = [Image]()
 
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         navigationController = MockNavigationController()
         let assemblyBuilder = AssemblyModuleBuilder()
         router = Router(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
         view = MockGalleryViewController()
-
     }
 
     override func tearDown() {
@@ -71,7 +69,6 @@ class GalleryPresenterTest: XCTestCase {
         XCTAssertEqual(catchImages?[0].title, "Baz")
         XCTAssertEqual(catchImages?[0].url, "https://novikov.com.ua/wp-content/uploads/2020/11/Mock-Tests-min.jpg")
         XCTAssertEqual(catchImages?[0].url, "https://novikov.com.ua/wp-content/uploads/2020/11/Mock-Tests-min.jpg")
-        
     }
     
     func testGetFailureImages() {
@@ -97,15 +94,18 @@ class GalleryPresenterTest: XCTestCase {
         images?.append(image)
         networkService = MockNetworkSservice(images: images)
         sut = GalleryPresenter(view: view, networkService: networkService, router: router)
-        networkService.getImages { result in
-            switch result {
-            case .success(let images):
-                self.sut.images = images
-            case .failure(_):
-                XCTFail()
+        
+        networkService.getImages { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let images):
+                    self.sut.images = images
+                case .failure(_):
+                    XCTFail()
+                }
             }
         }
-        
         sut.tapOnTheImage(imageId: image.id)
         
         XCTAssertTrue(navigationController.presentedVC is DetailViewController)
@@ -148,9 +148,7 @@ extension GalleryPresenterTest {
     }
     
     class MockGalleryViewController: GalleryViewProtocol {
-        func success() {
-
-        }
+        func success() { }
 
         func failture(error: Error) {
             print(error.localizedDescription)

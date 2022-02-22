@@ -11,19 +11,55 @@ import SnapKit
 import Nuke
 
 final class CustomButton : UIButton {
-    //var img: Image?
+    
+    //MARK: properties
+    
     var imgId: Int?
+    var imageLiked = UIImageView()
+    
+    private enum Consts {
+        enum ImageLikedImageView {
+            static let image = UIImage(systemName: "heart.fill")
+        }
+    }
+    
+    //MARK: inits
     
     init() {
         super.init(frame: CGRect.zero)
         self.contentVerticalAlignment = .fill
         self.contentHorizontalAlignment = .fill
+        setupSubviews()
+        configurateImageLiked()
+        setupConstraints()
+    }
+    
+    private func setupSubviews() {
+        self.imageView?.addSubview(imageLiked)
+        //self.addSubview(imageLiked)
+    }
+    
+    private func configurateImageLiked() {
+//        imageLiked.isUserInteractionEnabled = false
+        imageLiked.image = Consts.ImageLikedImageView.image
+        imageLiked.contentMode = .scaleAspectFit
+        imageLiked.tintColor = .white
+        imageLiked.isHidden = true
+    }
+    
+    private func setupConstraints() {
+        imageLiked.snp.makeConstraints { make in
+            make.bottom.leading.equalToSuperview().inset(5)
+            make.height.width.equalTo(17)
+        }
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+//MARK: extension Nuke_ImageDisplaying
 
 extension CustomButton: Nuke_ImageDisplaying {
     func nuke_display(image: PlatformImage?) {

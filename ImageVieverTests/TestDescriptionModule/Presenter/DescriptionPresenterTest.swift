@@ -56,7 +56,6 @@ extension DescriptionPresenterTest {
         func setDescription(description: String) {
             descriptionLabel = description
         }
-
     }
     
     class MockNavigationController: UINavigationController {

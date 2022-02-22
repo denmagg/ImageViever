@@ -22,7 +22,7 @@ class DetailPresenterTest: XCTestCase {
         view = MockDetailViewController()
         navigationController = MockNavigationController()
         let assemblyBuilder = AssemblyModuleBuilder()
-        router = Router(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
+        router = Router(tabBarController: navigationController, assemblyBuilder: assemblyBuilder)
         image = Image(albumId: 0, id: 0, title: "Baz", url: "Bar", thumbnailUrl: "Foo")
         sut = DetailPresenter(view: view, router: router, image: image)
     }
@@ -61,7 +61,6 @@ extension DetailPresenterTest {
         func setImage(image: Image?) {
             self.image = image
         }
-
     }
     
     class MockNavigationController: UINavigationController {

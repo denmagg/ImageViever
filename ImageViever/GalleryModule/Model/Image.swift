@@ -14,6 +14,5 @@ struct Image: Decodable {
     var title: String
     var url: String
     var thumbnailUrl: String
-    
+    var liked: Bool?
 }
-

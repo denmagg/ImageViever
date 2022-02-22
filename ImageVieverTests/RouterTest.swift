@@ -43,8 +43,6 @@ class RouterTest: XCTestCase {
         XCTAssertTrue(detailViewController is DetailViewController)
     }
     
-    
-    
     func testShowDescriptionPresentsDecriptionViewController() {
         let mockDescritpion = "Bar"
         
@@ -93,7 +91,5 @@ extension RouterTest {
             print(presentedVC)
             super.dismiss(animated: flag, completion: completion)
         }
-        
-        
     }
 }

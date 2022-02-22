@@ -13,16 +13,27 @@ protocol NetworkServiceProtocol {
 }
 
 final class NetworkService: NetworkServiceProtocol {
+    
+    //MARK: private properties
+    
+    private enum Consts {
+        //static let urlString = "https://gist.githubusercontent.com/denmagg/0ed8be348e7ff54189d9d147d6ea5b81/raw/2a90817c1dc6839772833200bbb40be028f658e4/JSONDataNotLikedAll.json"
+        static let urlString = "https://gist.githubusercontent.com/denmagg/ac6a6e1742f878d34cf7087294992d92/raw/cc5df262b8c0f0050991494c851e54976b3f7f87/JSONData.json"
+        static let fileName = "JSONData.json"
+    }
+    
+    //MARK: methods
+    
     func getImages(complition: @escaping (Result<[Image]?, NetworkError>) -> Void) {
-        let urlString = "https://jsonplaceholder.typicode.com/photos"
+        let urlString = Consts.urlString
         
         //path for the simulator for debugging
-        //let filePath = URL(fileURLWithPath: "/Users/denis/Desktop/SwiftProjects/ImageViever/ImageViever/GalleryModule/Model/JSONData.txt")
+//        let filePath: URL? = URL(fileURLWithPath: "/Users/denis/Desktop/SwiftProjects/ImageViever/ImageViever/GalleryModule/Model/JSONData.json")
         
         //path for the application to work
         var filePath = URL(string: "")
         do {
-            filePath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: .none, create: false).appendingPathComponent("JSONData.json")
+            filePath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: .none, create: false).appendingPathComponent(Consts.fileName)
         } catch {
             print(error)
         }
@@ -31,9 +42,11 @@ final class NetworkService: NetworkServiceProtocol {
 
         func getLocalData(failure reason: NetworkError) {
             do {
-                let fileData = try Data(contentsOf: filePath!)
-                let fileObj = try JSONDecoder().decode([Image].self, from: fileData)
-                complition(.success(fileObj))
+                if let filePath = filePath {
+                    let fileData = try Data(contentsOf: filePath)
+                    let fileObj = try JSONDecoder().decode([Image].self, from: fileData)
+                    complition(.success(fileObj))
+                }
             } catch {
                 complition(.failure(reason))
             }
@@ -50,13 +63,21 @@ final class NetworkService: NetworkServiceProtocol {
                     getLocalData(failure: .serverError)
                     return
                 }
+                
+                //Если на сервере нет данных - дергаем с лок файла
+                guard let data = data else {
+                    getLocalData(failure: .serverError)
+                    return
+                }
 
                 do {
                     //Если данные удалось  декодировать с сервера, то записываем их в локальный файл и выводим
-                    let obj = try JSONDecoder().decode([Image].self, from: data!)
+                    let obj = try JSONDecoder().decode([Image].self, from: data)
 
                     do {
-                        try data!.write(to: filePath!)
+                        if let filePath = filePath {
+                            try data.write(to: filePath)
+                        }
                     }
                     catch {
 //                        print("Failed to write JSON data: \(error.localizedDescription)")
@@ -65,6 +86,7 @@ final class NetworkService: NetworkServiceProtocol {
 
                     complition(.success(obj))
                 } catch {
+                    print(error)
                     //Если данные не удалось декодировать с сервера (например сервер не отвечает, а интернет подключение есть) то дергаем их из лок файла
                     //Если данные не удалось декодировать с сервера и при этом их нет на лок файле, то на сервере содержатся не те данные и кеша у нас нет
                     getLocalData(failure: .serverError)
@@ -73,6 +95,5 @@ final class NetworkService: NetworkServiceProtocol {
         } else {
             getLocalData(failure: .noConnection)
         }
-
     }
 }

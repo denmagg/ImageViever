@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="ipad12_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,22 +12,24 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GalleryAppicon" translatesAutoresizingMaskIntoConstraints="NO" id="h3P-TK-8Fh">
-                                <rect key="frame" x="87" y="333" width="240" height="240"/>
+                                <rect key="frame" x="268" y="87" width="830" height="830"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="h3P-TK-8Fh" secondAttribute="height" multiplier="1:1" id="myk-aU-niy"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.77379482980000003" green="0.74525958299999995" blue="0.9372780919" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.77254901960784317" green="0.74509803921568629" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="h3P-TK-8Fh" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="0kO-OD-juM"/>
-                            <constraint firstItem="h3P-TK-8Fh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="27M-nZ-AMg"/>
+                            <constraint firstItem="h3P-TK-8Fh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="27M-nZ-AMg"/>
                             <constraint firstItem="h3P-TK-8Fh" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Rbs-fI-J0X"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="h3P-TK-8Fh" secondAttribute="trailing" constant="87" id="Vu2-PK-wmJ"/>
+                            <constraint firstItem="h3P-TK-8Fh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="87" id="SFo-6N-aYt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h3P-TK-8Fh" secondAttribute="trailing" constant="87" id="Vu2-PK-wmJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="h3P-TK-8Fh" secondAttribute="bottom" constant="87" id="n0N-SD-Z9Z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

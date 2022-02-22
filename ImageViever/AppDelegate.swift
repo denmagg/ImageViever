@@ -7,21 +7,20 @@
 //
 
 import UIKit
+import Nuke
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
         NetworkMonitor.shared.startMonitoring()
         return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
         NetworkMonitor.shared.stopMonitoring()
+        ImageCache.shared.removeAll()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -47,7 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var orientationLock = UIInterfaceOrientationMask.all
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-            return self.orientationLock
+        //разблокируем все ориентации после того, как пропал launchScreen
+        //внимание, если возникнут проблемы с ориентациями бежим сюда
+        //https://stackoverflow.com/questions/47884449/splash-screen-orientation-lock
+        //стоковый код:
+        //return self.orientationLock
+        let orientations = UIInterfaceOrientationMask.all
+        return orientations
     }
 
 
