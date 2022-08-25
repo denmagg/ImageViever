@@ -74,4 +74,4 @@ ___
 5. Запустите `ImageViever.xcworkspace`
 ___
 #### Contact me:
-&nbsp;[![image-text](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](https://mail.google.com/mail/#search/denmagg.work@gmail.com)&nbsp;[![image-text](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/denis99m)&nbsp;[![image-text](https://img.shields.io/badge/head_hunter-B71C1C?style=for-the-badge&logo=hh&logoColor=white)](https://hh.ru/resume/e71c0f26ff0738b4410039ed1f37645a747272)
+&nbsp;[![image-text](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](https://mail.google.com/mail/#search/denmagg.work@gmail.com)&nbsp;[![image-text](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/denis99m)
