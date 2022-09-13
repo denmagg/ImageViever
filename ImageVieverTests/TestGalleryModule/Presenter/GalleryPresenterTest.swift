@@ -21,7 +21,7 @@ class GalleryPresenterTest: XCTestCase {
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         navigationController = MockNavigationController()
-        let assemblyBuilder = AssemblyModuleBuilder()
+        let assemblyBuilder = AssemblyBuilder()
         router = Router(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
         view = MockGalleryViewController()
     }
@@ -106,8 +106,7 @@ class GalleryPresenterTest: XCTestCase {
                 }
             }
         }
-        sut.tapOnTheImage(imageId: image.id)
-        
+        sut.tapOnTheImage()
         XCTAssertTrue(navigationController.presentedVC is DetailViewController)
     }
     

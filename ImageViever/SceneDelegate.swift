@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         
         let tabBarController = UITabBarController()
-        let assemblyBuilder = AssemblyModuleBuilder()
+        let assemblyBuilder = AssemblyBuilder()
         let router = Router(tabBarController: tabBarController, assemblyBuilder: assemblyBuilder)
         
         router.initialViewController()
@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
 //        let navigationController = UINavigationController()
-//        let assemblyBuilder = AssemblyModuleBuilder()
+//        let assemblyBuilder = AssemblyBuilder()
 //        let router = Router(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
 //
 //        router.initialViewController()

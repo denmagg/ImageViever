@@ -21,7 +21,7 @@ class DetailPresenterTest: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         view = MockDetailViewController()
         navigationController = MockNavigationController()
-        let assemblyBuilder = AssemblyModuleBuilder()
+        let assemblyBuilder = AssemblyBuilder()
         router = Router(tabBarController: navigationController, assemblyBuilder: assemblyBuilder)
         image = Image(albumId: 0, id: 0, title: "Baz", url: "Bar", thumbnailUrl: "Foo")
         sut = DetailPresenter(view: view, router: router, image: image)

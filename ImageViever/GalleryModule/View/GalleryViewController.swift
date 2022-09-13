@@ -187,7 +187,7 @@ final class GalleryViewController: UIViewController {
     @objc func didTapOnImageButton(button: CustomButton) {
         print(presenter.images?[button.imgId!].liked)
         print(button.imgId)
-        presenter.tapOnTheImage(imageId: button.imgId)
+        presenter.tapOnTheImage()//(imageId: button.imgId)
     }
     
     @objc func didTapOnAddImageButton() {

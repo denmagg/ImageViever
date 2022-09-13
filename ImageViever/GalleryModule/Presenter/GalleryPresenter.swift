@@ -21,7 +21,7 @@ protocol GalleryPresenterProtocol: class {
     var images: [Image]? { get set }
     init(view: GalleryViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol, showLiked: Bool)
     func getImages()
-    func tapOnTheImage(imageId: Int?)
+    func tapOnTheImage()//(imageId: Int?)
     func addImage()
 }
 
@@ -50,11 +50,18 @@ class GalleryPresenter: GalleryPresenterProtocol {
     
     //MARK: methods
     
-    func tapOnTheImage(imageId: Int?) {
-        if let imageId = imageId, let image = images?[imageId] {
+    func tapOnTheImage() {
+        let imageId = 1
+        if let image = images?[imageId] {
             router?.showDetail(image: image)
         }
     }
+    
+//    func tapOnTheImage(imageId: Int?) {
+//        if let imageId = imageId, let image = images?[imageId] {
+//            router?.showDetail(image: image)
+//        }
+//    }
     
     func addImage() {
         router?.showImageAdding()
@@ -89,5 +96,3 @@ class GalleryPresenter: GalleryPresenterProtocol {
         }
     }
 }
-
-

@@ -6,8 +6,8 @@ target 'ImageViever' do
   use_frameworks!
 
   # Pods for ImageViever
-  pod 'Nuke', '=9.0'
-  pod 'SnapKit', '~> 5.0.0'
+  pod 'Nuke'
+  pod 'SnapKit'
   target 'ImageVieverTests' do
     inherit! :search_paths
     # Pods for testing
