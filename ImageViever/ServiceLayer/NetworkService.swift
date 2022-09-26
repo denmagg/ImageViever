@@ -45,10 +45,14 @@ final class NetworkService: NetworkServiceProtocol {
                 if let filePath = filePath {
                     let fileData = try Data(contentsOf: filePath)
                     let fileObj = try JSONDecoder().decode([Image].self, from: fileData)
-                    complition(.success(fileObj))
+                    DispatchQueue.main.async {
+                        complition(.success(fileObj))
+                    }
                 }
             } catch {
-                complition(.failure(reason))
+                DispatchQueue.main.async {
+                    complition(.failure(reason))
+                }
             }
         }
 
@@ -81,10 +85,14 @@ final class NetworkService: NetworkServiceProtocol {
                     }
                     catch {
 //                        print("Failed to write JSON data: \(error.localizedDescription)")
-                        complition(.failure(.failedToWriteData))
+                        DispatchQueue.main.async {
+                            complition(.failure(.failedToWriteData))
+                        }
                     }
-
-                    complition(.success(obj))
+                    
+                    DispatchQueue.main.async {
+                        complition(.success(obj))
+                    }
                 } catch {
                     print(error)
                     //Если данные не удалось декодировать с сервера (например сервер не отвечает, а интернет подключение есть) то дергаем их из лок файла
